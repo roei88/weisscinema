@@ -1,0 +1,60 @@
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'vpum' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-na:before {
+  content: "\e930";
+}
+.icon-cog:before {
+  content: "\e90c";
+}
+.icon-internet:before {
+  content: "\e907";
+}
+.icon-warning:before {
+  content: "\e90e";
+}
+.icon-active:before {
+  content: "\e90f";
+}
+.icon-alert:before {
+  content: "\e910";
+}
+.icon-inactive:before {
+  content: "\e911";
+}
+.icon-edit:before {
+  content: "\e915";
+}
+.icon-pending:before {
+  content: "\e916";
+}
+.icon-eye_dropper:before {
+  content: "\e933";
+}
+.icon-lock:before {
+  content: "\e934";
+}
+.icon-undo:before {
+  content: "\e935";
+}
+.icon-add_btn_icn:before {
+  content: "\e936";
+}
+.icon-revert:before {
+  content: "\e938";
+}
+.icon-cloud-upload:before {
+  content: "\e93b";
+}
