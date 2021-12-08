@@ -13,6 +13,7 @@ message TitlesSearch
     int32 totalResults = 2;
     string response = 3;
     string searchQuery = 4;
+    repeated string pages = 5;
 }
 
 message SingleTitle

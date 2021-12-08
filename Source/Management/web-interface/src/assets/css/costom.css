@@ -1300,6 +1300,7 @@ ul.eventlist li:before,
 .search-key {
     font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     border: solid 0.5px rgba(46, 46, 46, 0.44); 
+    color:  rgb(255, 255, 255); 
     width: 40%;
     overflow: hidden;
     border-radius: 3px;

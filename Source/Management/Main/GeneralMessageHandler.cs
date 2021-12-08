@@ -80,6 +80,8 @@ namespace Main
                 //TODO:: check that result is true
                 JObject titlesObj = JObject.Parse(new WebClient().DownloadString(url));
                 JArray titlesArr = (JArray)titlesObj["Search"];
+                //string pageStr = (string)titlesObj["Search"];
+                titlesSearch.Pages.Add(titlesArr.ToString());
                 titlesSearch.Search.AddRange(titlesArr.ToObject<List<ProtoMessages.SingleTitle>>());
                 count += PAGE_SIZE;
                 double totalResults = double.Parse((string)titlesObj["totalResults"]);

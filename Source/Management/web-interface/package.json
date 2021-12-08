@@ -28,13 +28,13 @@
     "sass-loader": "^6.0.6",
     "script-loader": "^0.7.2",
     "tls": "0.0.1",
-    "vue": "^2.3.3",
+    "vue": "^2.6.11",
     "vue-awesome": "^2.3.3",
     "vue-cookies": "^1.5.4",
     "vue-router": "^2.6.0",
     "vue-slider-component": "^2.7.1",
     "vuetify": "^2.6.1",
-    "vuex": "^2.3.1"
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -69,7 +69,9 @@
     "url-loader": "^1.1.2",
     "vue-loader": "^12.1.0",
     "vue-style-loader": "^3.0.1",
-    "vue-template-compiler": "^2.3.3",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify": "^2.6.1",
+    "vuetify-loader": "^1.7.0",
     "webpack": "^2.6.1",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",
