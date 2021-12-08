@@ -1,0 +1,65 @@
+syntax = "proto3";
+package ProtoMessages;
+
+message WrappedMessage
+{
+    string messageTypeStr = 1; 
+    bytes messageContent = 2;
+}
+
+message TitlesSearch
+{
+    repeated SingleTitle search = 1;
+    int32 totalResults = 2;
+    string response = 3;
+    string searchQuery = 4;
+}
+
+message SingleTitle
+{
+    string title = 1;
+    string year = 2;
+    string imdbID = 3;
+    string type = 4;
+    string poster = 5;
+}
+
+message MovieTitle
+{
+    string title = 1;
+    string year = 2;
+    string reated = 3;
+    string released = 4;
+    string runtime = 5;
+    string genere = 6;
+    string director = 7;
+    string writer = 8;
+    string actors = 9;
+    string plot = 10;
+    string language = 11;
+    string country = 12;
+    string awards = 13;
+    string poster = 14;
+    repeated TitleRating ratings= 15;
+    string metascore = 16;
+    string imdbRating = 17;
+    string imbdVotes = 18;
+    string imdbID = 19;
+    string type = 20;
+    string dvd = 21;
+    string boxOffice = 22;
+    string production = 23;
+    string website = 24;
+    string response = 25;
+}
+
+message TitleRating
+{
+   string source = 1;
+   int32 value = 2;
+}
+
+message VersionMessage 
+{
+    string version = 1;
+}

@@ -1,10 +1,10 @@
 <template>
     <nav class="navbar navbar-default  navbar-static-top" role="navigation">
 
-    <costom-modal-dialog v-if="showNavDialog" @no="showNavDialog = false" @yes="unsevedChangesYes">
+    <!-- <costom-modal-dialog v-if="showNavDialog" @no="showNavDialog = false" @yes="unsevedChangesYes">
       <div slot="header">Unsaved Changes</div>
       <div slot="body">{{unsavedNavDialogMessage}}<br/>Do you want to discard them and continue?</div>
-    </costom-modal-dialog>
+    </costom-modal-dialog> -->
 
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -41,15 +41,15 @@
     data() {
       return {
         searchQuery: "",
-        waitingForSearchResults: false,
-        systemStatus: proto_messages.GeneralStatus.GOOD,
-        connectedToAgent: false,
-        showAdvancedNavBar: this.$store.getters.getAdvancedMode,
-        mainNavBar: [
-          { title: 'Dashboard',     icon: 'icon icon-dashboard',    name: 'status-page',        route: '',              visible: true }
-        ],
-        showNavDialog: false,
-        pageTransitionPanding: ""
+        waitingForSearchResults: false
+        // systemStatus: proto_messages.GeneralStatus.GOOD,
+        // connectedToAgent: false,
+        // showAdvancedNavBar: this.$store.getters.getAdvancedMode,
+        // mainNavBar: [
+        //   { title: 'Dashboard',     icon: 'icon icon-dashboard',    name: 'status-page',        route: '',              visible: true }
+        // ],
+        // showNavDialog: false,
+        // pageTransitionPanding: ""
       }
     },
     methods: {
@@ -58,29 +58,36 @@
           this.$router.push("/" + route);
           this.pageTransitionPanding = "";
       },
-      goToPage(route) {
-        if (this.$store.getters.isDirty)
-        {
-          this.showNavDialog = true;
-          this.pageTransitionPanding = route;
-        }
-        else
-        {
-          this.navigateTo(route);
-        }
-      },
+      // goToPage(route) {
+      //   if (this.$store.getters.isDirty)
+      //   {
+      //     this.showNavDialog = true;
+      //     this.pageTransitionPanding = route;
+      //   }
+      //   else
+      //   {
+      //     this.navigateTo(route);
+      //   }
+      // },
       unsevedChangesYes() {
         this.showNavDialog = false
         this.$store.commit('setIsDirty', false);
         this.navigateTo(this.pageTransitionPanding);
       },
       searchMovies() {
-        console.log("send seach req.")
+          console.log("sending search movies request")
+          this.waitingForSearchResults = true;
+          var newMsg = new proto_messages.TitlesSearch();
+          newMsg.setSearchquery(this.searchQuery);
+          this.$store.dispatch('sendMessageAsWrappedMessage', {
+              msg: newMsg,
+              msgType: "ProtoMessages.TitlesSearch"
+          });
       }
     },
     computed: {
       ...mapGetters({
-
+        
       }),
       currentRoute() {
         return this.$route.name;
@@ -90,8 +97,9 @@
       }
     },
     created () {
-      eventBus.$on('newMsg', connected => {
-        console.log("newMsg")
+      eventBus.$on('TitlesSearchReply', payload => {
+        console.log("recived TitlesSearchReply");
+        this.waitingForSearchResults = false;
       });
     }
   }

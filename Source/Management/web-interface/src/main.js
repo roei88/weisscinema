@@ -4,7 +4,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
 import 'vue-awesome/icons'
-
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
 
 import RadioButton from './components/RadioButton.vue'
 
@@ -63,6 +64,7 @@ export const eventBus = new Vue({
 
 Vue.use(VueRouter);
 Vue.use(VueCookies);
+Vue.use(Vuetify);
 
 Vue.component('icon', Icon)
 Vue.component('radio-button', RadioButton)

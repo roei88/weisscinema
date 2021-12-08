@@ -6,11 +6,7 @@ const COMPILED_PROTO_FILES_DIRECTORY_PATH = path.resolve(__dirname, '..', 'src',
 const PROTO_FILES_DIRECTORY_PATH = path.resolve(__dirname, '..', '..', '..', 'ServicesDefinitions');
 
 const protoFileNames = [
-    'Messages.proto',
-    'Logs.proto',
-    'VPU.proto',
-    'CommonMessages.proto',
-    'PipObjectsProperties.proto'
+    'Messages.proto'
 ];
 
 const compiledProtoDirectoryFileNames = fs.readdirSync(COMPILED_PROTO_FILES_DIRECTORY_PATH);

@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Platforms>x64</Platforms>
+    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
+    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+   <RootNamespace>Services</RootNamespace>
+   <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>..\Release\</OutputPath>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>..\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.6.1" />
+    <PackageReference Include="Grpc" Version="1.22.0" />
+    <PackageReference Include="Grpc.Tools" Version="1.22.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup> 
+  
+  <ItemGroup>
+    <Folder Include="Definitions\" />
+    <Folder Include="Outputs\" />
+  </ItemGroup> 
+  
+  <ItemGroup>
+    <ApplicationDefinition Include="..\ServicesDefinitions\Messages.proto" Link="Definitions\Messages.proto" />
+  </ItemGroup>
+  
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Condition="'$(IsWindows)'=='true'" Command="&quot;$(SolutionDir)3rd Party\packages\Grpc.Tools.1.22.0\tools\windows_x64\protoc.exe&quot; -I $(SolutionDir)ServicesDefinitions\ --csharp_out  $(SolutionDir)ServicesDotNet\Outputs --grpc_out=$(SolutionDir)ServicesDotNet\Outputs --plugin=protoc-gen-grpc=&quot;$(SolutionDir)3rd Party\packages\Grpc.Tools.1.22.0\tools\windows_x64\grpc_csharp_plugin.exe&quot; $(SolutionDir)ServicesDefinitions\Messages.proto" />
+  </Target>
+  
+</Project>

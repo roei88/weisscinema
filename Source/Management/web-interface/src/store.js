@@ -95,7 +95,8 @@ export const store = new Vuex.Store({
     state: {
         wsSocket: socket,
         connectedToCoordinator: false,
-        // articles: new proto_messages.ArticlesMessage(),
+        titles: new proto_messages.TitlesSearch(),
+        movieList: []
     },
 
     actions: {
@@ -114,8 +115,8 @@ export const store = new Vuex.Store({
                 var msgContent = coordinatorMsg.getMessagecontent();
                 switch (msgTypeStr)
                 {
-                    case "ProtoMessages.ArticlesMessage":
-                        context.dispatch('handleIncomingArticlesMessage', msgContent);
+                    case "ProtoMessages.TitlesSearch":
+                        context.dispatch('handleIncomingTitlesSearchMessage', msgContent);
                         break;
                 }
             }
@@ -125,16 +126,34 @@ export const store = new Vuex.Store({
             }
         },
         
-        handleIncomingArticlesMessage(context, msgContent) 
+        handleIncomingTitlesSearchMessage(context, msgContent) 
         {
             try 
             {
-                context.state.articles = proto_messages.ArticlesMessage.deserializeBinary(msgContent);
-                eventBus.$emit('ArticlesReply', { });
+                context.state.titles = proto_messages.TitlesSearch.deserializeBinary(msgContent);
+
+
+                var singleMovie;
+                // var protoMoviesList = context.state.titles.getSearchList(); 
+                // var tempMovieList = [];
+                // for(var i = 0; i < protoMoviesList.length; i++) 
+                // {
+                //     singleMovie = {Title: "", Type:"", Year: ""};
+                //     tempMovieList.name = protoMoviesList[i].getTitle();
+                //     tempMovieList.type = protoMoviesList[i].getYear();
+                //     tempMovieList.year = protoMoviesList[i].getType();
+                //     tempMovieList.push(singleMovie);
+                // };
+
+                context.state.movieList = context.state.titles.getSearchList();
+
+                console.log(context.state.movieList);
+
+                eventBus.$emit('TitlesSearchReply', { });
 
             }
             catch (e) {
-                console.error("Failed to handle incoming articles message, error: " + e.toString());
+                console.error("Failed to handle incoming TitlesSearch message, error: " + e.toString());
             }
         },
 
@@ -171,13 +190,16 @@ export const store = new Vuex.Store({
     },
 
     getters: {
-        getArticles(state) {
-            var ret = undefined;
-            if (state.articles)
-            {
-                ret = state.articles;
-            }
-            return ret;                          
-        }
+        // getArticles(state) {
+        //     var ret = undefined;
+        //     if (state.articles)
+        //     {
+        //         ret = state.articles;
+        //     }
+        //     return ret;                          
+        // },
+        movieList(state) {
+            return state.movieList;
+        },
     }
 });
