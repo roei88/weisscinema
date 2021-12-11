@@ -139,7 +139,7 @@ export const store = new Vuex.Store({
                 var keys = new Map();
                 for(var i = 0; i < protoMoviesList.length; i++) 
                 {
-                    var singleTitle = {title: "", year:"", imdbID: "", poster: ""};
+                    var singleTitle = {imdbID: "", poster: ""};
                     if (protoMoviesList[i].getPoster()=="N/A")
                     {
                         singleTitle.poster = context.state.placeholder;
@@ -148,8 +148,8 @@ export const store = new Vuex.Store({
                     {
                         singleTitle.poster = protoMoviesList[i].getPoster();
                     }
-                    singleTitle.title = protoMoviesList[i].getTitle();
-                    singleTitle.year = protoMoviesList[i].getYear();
+                    //singleTitle.title = protoMoviesList[i].getTitle();
+                    //singleTitle.year = protoMoviesList[i].getYear();
                     singleTitle.imdbID = protoMoviesList[i].getImdbid();
                     if (!keys.has(singleTitle.imdbID))
                     {

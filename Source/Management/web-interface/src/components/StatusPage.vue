@@ -6,13 +6,14 @@
                 <!-- <template> -->
                     <v-col class="container" cols="12">
                         <v-card elevation="12" class="cards" v-for="item in movieList" :key="item.imdbID">
-                        <v-img class="title-poster" :src="`${item.poster}`"> </v-img>
+                        <!-- TODO:: display title text on top of placeholder image -->
+                        <v-img class="title-poster" :src="`${item.poster}`">  </v-img>
                         <!-- <v-img class="image-height" :src="item.poster == 'N/A' ? `@/assets/img/title-placeholder.png` : `${item.poster}`"> </v-img> -->
-                        <v-card-text>
+                        <!-- <v-card-text>
                             <v-row class="card-text mt-2 "> <strong>Name : </strong> {{item.title}}</v-row>
                             <v-row class="card-text mt-2 "> </v-row>
                             <v-row class="card-text mt-6 "> <strong>Year : </strong> {{item.year}}</v-row>                            
-                        </v-card-text>
+                        </v-card-text> -->
                         </v-card>
                     </v-col>
                 <!-- </template> -->
