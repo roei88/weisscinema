@@ -29,7 +29,6 @@
                             <button>
                                 Add To Wishlist
                             </button>
-
                         </div>
                         <button class="btn-search-movie" @click="$emit('Close')"> {{ closeButton }}</button>
                     </div>

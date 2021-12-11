@@ -16,8 +16,11 @@
                     <v-col class="container" cols="12">
                         <v-card elevation="12" class="cards" v-for="item in movieList" :key="item.imdbID">
                         <!-- TODO:: display title text on top of placeholder image -->
-                        <div @click="hoverImg(item.imdbID)">
-                            <v-img class="title-poster" :src="`${item.poster}`">  </v-img>
+                        <div class="card-container" @click="hoverImg(item.imdbID)">
+                            <v-img class="title-poster " :src="`${item.poster}`" alt> </v-img>
+                            <div class="overlay">        
+                                <div class="text">{{ item.title }} <br><br> {{ item.year }}</div>
+                            </div>
                         </div>
                         
                         <!-- <v-img class="image-height" :src="item.poster == 'N/A' ? `@/assets/img/title-placeholder.png` : `${item.poster}`"> </v-img> -->
@@ -182,4 +185,38 @@
 .row {
   display: block !important;
 }
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+}
+
+.card-container:hover .overlay {
+  opacity: 100%;
+}
+
+.card-container:hover .title-poster {
+  opacity: 40%;
+}
+
+.text {
+  color: rgb(255, 174, 0);
+  font-size: 20px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
 </style>
