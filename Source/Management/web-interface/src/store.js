@@ -127,57 +127,40 @@ export const store = new Vuex.Store({
             }
         },
         
+        // TODO:: replace map keys check on re-init/check on server side
         handleIncomingTitlesSearchMessage(context, msgContent) 
         {
             try 
             {
                 context.state.titles = proto_messages.TitlesSearch.deserializeBinary(msgContent);
 
-
-                //var singleMovie = [];
                 var protoMoviesList = context.state.titles.getSearchList(); 
                 var tempMovieList = [];
+                var keys = new Map();
                 for(var i = 0; i < protoMoviesList.length; i++) 
                 {
                     var singleTitle = {title: "", year:"", imdbID: "", poster: ""};
                     if (protoMoviesList[i].getPoster()=="N/A")
                     {
-                        //console.log("replacing image");
                         singleTitle.poster = context.state.placeholder;
                     }
                     else
                     {
                         singleTitle.poster = protoMoviesList[i].getPoster();
                     }
-                    // singleTitle.poster = protoMoviesList[i].getPoster();
                     singleTitle.title = protoMoviesList[i].getTitle();
                     singleTitle.year = protoMoviesList[i].getYear();
                     singleTitle.imdbID = protoMoviesList[i].getImdbid();
-                    
-                    tempMovieList.push(singleTitle);
+                    if (!keys.has(singleTitle.imdbID))
+                    {
+                        keys.set(singleTitle.imdbID, singleTitle.title);
+                        tempMovieList.push(singleTitle);
+                    }
                 }
-                // var tempMovieList = [];
-                // for(var i = 0; i < protoMoviesList.length; i++) 
-                // {
-                //     singleMovie = {Title: "", Type:"", Year: ""};
-                //     tempMovieList.name = protoMoviesList[i].getTitle();
-                //     tempMovieList.type = protoMoviesList[i].getYear();
-                //     tempMovieList.year = protoMoviesList[i].getType();
-                //     tempMovieList.push(singleMovie);
-                // };
-                //var pages = context.state.titles.getPagesList();
+
                 context.state.movieList = tempMovieList;
                 console.log(context.state.movieList);
- 
-                // for(var i = 0; i < context.state.movieList.length; i++) 
-                // {
-                //     console.log(context.state.movieList.Title);
-                // };
-
-                //console.log(context.state.movieList);
-
                 eventBus.$emit('TitlesSearchReply', { });
-
             }
             catch (e) {
                 console.error("Failed to handle incoming TitlesSearch message, error: " + e.toString());

@@ -18,10 +18,10 @@
   
       <li>
         <div class="search-wrapper">
-          <input class="search-key" type="text" v-model="searchQuery" placeholder="Search Title..."/>
-          <div class="pull-right">
+          <input class="search-key" type="text" @keyup="searchMovies" v-model="searchQuery" placeholder="Search Title..."/>
+          <!-- <div class="pull-right">
               <button type="submit" class="btn-search-movie" @click="searchMovies">{{waitingForSearchResults ? "Searching..." : "Search"}}</button>
-          </div>
+          </div> -->
         </div>
 
         
@@ -54,7 +54,7 @@
     },
     methods: {
       navigateTo(route) {
-          mixpanel.track("Navigate to " + route + " from " + this.$route.name);
+          // mixpanel.track("Navigate to " + route + " from " + this.$route.name);
           this.$router.push("/" + route);
           this.pageTransitionPanding = "";
       },

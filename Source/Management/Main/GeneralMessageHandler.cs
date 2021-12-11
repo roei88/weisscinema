@@ -25,7 +25,7 @@ namespace Main
         //TODO:: move to DB/config file
         const string OMDB_API_KEY = "bb182d9e";
         const string OMDB_URL = @"http://www.omdbapi.com/?";
-        const int MAX_PAGES = 1;
+        const int MAX_PAGES = 10;
         const int PAGE_SIZE = 10;
         protected MessageHandlersManager _messageHandlerManager;
 
@@ -67,51 +67,63 @@ namespace Main
         [NewFormatMessageHandlerMethod]
         public void HandleTitlesSearch(ProtoMessages.TitlesSearch titlesSearch)
         {
-            Console.WriteLine($"received new TitlesSearch message with query: {titlesSearch.SearchQuery}");
-            List<SingleTitle> listOfTitles = new List<SingleTitle>();
-            int currentPage = 1;
-            int count = 0;
-            List<JObject> pages = new List<JObject>();
-            var urlBase = $"{OMDB_URL}{GetOMDBApiKey()}";
-            var url = $"{urlBase}&{GetQueries(titlesSearch.SearchQuery)}";
+            titlesSearch.Search.Clear();
+            titlesSearch.Pages.Clear();
 
-            try
+            if (!string.IsNullOrEmpty(titlesSearch.SearchQuery))
 			{
-                //TODO:: check that result is true
-                JObject titlesObj = JObject.Parse(new WebClient().DownloadString(url));
-                JArray titlesArr = (JArray)titlesObj["Search"];
-                //string pageStr = (string)titlesObj["Search"];
-                titlesSearch.Pages.Add(titlesArr.ToString());
-                titlesSearch.Search.AddRange(titlesArr.ToObject<List<ProtoMessages.SingleTitle>>());
-                count += PAGE_SIZE;
-                double totalResults = double.Parse((string)titlesObj["totalResults"]);
-                double devition = (totalResults / PAGE_SIZE);
-                int totalPages = (int)Math.Ceiling(devition);
-                totalResults -= PAGE_SIZE;
-
-                while (totalResults > 0 && currentPage < MAX_PAGES)
+                Console.WriteLine($"received new TitlesSearch message with query: {titlesSearch.SearchQuery}");
+                List<SingleTitle> listOfTitles = new List<SingleTitle>();
+                int currentPage = 1;
+                int count = 0;
+                List<JObject> pages = new List<JObject>();
+                var urlBase = $"{OMDB_URL}{GetOMDBApiKey()}";
+                var url = $"{urlBase}&{GetQueries(titlesSearch.SearchQuery)}";
+                
+                try
                 {
-                    currentPage++;
-                    var nextPageUrl = $"{urlBase}&{GetQueries(titlesSearch.SearchQuery, (currentPage).ToString())}";
-                    JArray nextPageArr = (JArray)(JObject.Parse(new WebClient().DownloadString(nextPageUrl))["Search"]);
-                    titlesSearch.Search.AddRange(titlesArr.ToObject<List<ProtoMessages.SingleTitle>>());
-                    totalResults -= PAGE_SIZE;
-                    count += PAGE_SIZE;
+                    //TODO:: check that result is true
+                    JObject titlesObj = JObject.Parse(new WebClient().DownloadString(url));
+                    JArray titlesArr = (JArray)titlesObj["Search"];
+                    //string pageStr = (string)titlesObj["Search"];
+                    if (titlesArr!=null)
+					{
+                        //titlesSearch.Pages.Add(titlesArr.ToString());
+                        titlesSearch.Search.AddRange(titlesArr.ToObject<List<ProtoMessages.SingleTitle>>());
+                        count += PAGE_SIZE;
+                        double totalResults = double.Parse((string)titlesObj["totalResults"]);
+                        double devition = (totalResults / PAGE_SIZE);
+                        int totalPages = (int)Math.Ceiling(devition);
+                        totalResults -= PAGE_SIZE;
+
+                        while (totalResults > 0 && currentPage < MAX_PAGES)
+                        {
+                            currentPage++;
+                            var nextPageUrl = $"{urlBase}&{GetQueries(titlesSearch.SearchQuery, (currentPage).ToString())}";
+                            JArray nextPageArr = (JArray)(JObject.Parse(new WebClient().DownloadString(nextPageUrl))["Search"]);
+                            titlesSearch.Search.AddRange(titlesArr.ToObject<List<ProtoMessages.SingleTitle>>());
+                            totalResults -= PAGE_SIZE;
+                            count += PAGE_SIZE;
+                        }
+
+                        if (totalResults < 0)
+                        {
+                            count += (int)totalResults;
+                        }
+
+                        titlesSearch.TotalResults = count;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex.Message} Trace: {ex.StackTrace}");
                 }
 
-                if (totalResults < 0)
-                {
-                    count += (int)totalResults;
-                }
-
-                titlesSearch.TotalResults = count;
+                Console.WriteLine("Sending results");
             }
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Exception: {ex.Message} Trace: {ex.StackTrace}");
-			}
 
-			Console.WriteLine("Sending results");
+
             Send(titlesSearch);
         }
 
