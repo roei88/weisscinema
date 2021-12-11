@@ -13,7 +13,7 @@ message TitlesSearch
     int32 totalResults = 2;
     string response = 3;
     string searchQuery = 4;
-    repeated string pages = 5;
+    map<string, MovieTitle> titles = 5;
 }
 
 message SingleTitle
@@ -29,10 +29,10 @@ message MovieTitle
 {
     string title = 1;
     string year = 2;
-    string reated = 3;
+    string rated = 3;
     string released = 4;
     string runtime = 5;
-    string genere = 6;
+    string genre = 6;
     string director = 7;
     string writer = 8;
     string actors = 9;
@@ -44,7 +44,7 @@ message MovieTitle
     repeated TitleRating ratings= 15;
     string metascore = 16;
     string imdbRating = 17;
-    string imbdVotes = 18;
+    string imdbVotes = 18;
     string imdbID = 19;
     string type = 20;
     string dvd = 21;
@@ -57,7 +57,7 @@ message MovieTitle
 message TitleRating
 {
    string source = 1;
-   int32 value = 2;
+   string value = 2;
 }
 
 message VersionMessage 

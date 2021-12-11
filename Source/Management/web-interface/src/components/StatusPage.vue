@@ -1,13 +1,25 @@
 <template>
     <div id="page-wrapper">
-        <div class="contentWrapper">
 
+        <hover-frame v-if="showHoverFrame && !watingForTitle" @Close="unhoverImg()">
+            <!-- <div slot="header">{{popupTitle.getTitle()}}</div>
+            <div slot="body" class="col-xs-12">
+                Body
+            </div> -->
+        </hover-frame>
+
+
+        <div class="contentWrapper">
+            
               <v-row>
                 <!-- <template> -->
                     <v-col class="container" cols="12">
                         <v-card elevation="12" class="cards" v-for="item in movieList" :key="item.imdbID">
                         <!-- TODO:: display title text on top of placeholder image -->
-                        <v-img class="title-poster" :src="`${item.poster}`">  </v-img>
+                        <div @click="hoverImg(item.imdbID)">
+                            <v-img class="title-poster" :src="`${item.poster}`">  </v-img>
+                        </div>
+                        
                         <!-- <v-img class="image-height" :src="item.poster == 'N/A' ? `@/assets/img/title-placeholder.png` : `${item.poster}`"> </v-img> -->
                         <!-- <v-card-text>
                             <v-row class="card-text mt-2 "> <strong>Name : </strong> {{item.title}}</v-row>
@@ -65,22 +77,61 @@
     export default {
         data() {
             return {
-                // placeholder:'title-placeholder.png',
-                // placeholder:require('../assets/img/title-placeholder.png'),
+                showHoverFrame: false,
+                watingForTitle: false,
+                currentImdbID: "",
+                popupTitle: new proto_messages.MovieTitle()
             }
         },
         computed: {
             ...mapGetters({
-                movieList : "movieList"
+                movieList : "movieList",
+                titleList: "titleList",
             })
         },
         methods: {
             navigateTo(route) {
                 this.$router.push("/" + route);
+            },
+            hoverImg(imdbID) {
+                console.log("hovering on: "+imdbID)
+                this.currentImdbID = imdbID;
+                
+                if (!this.titleList.has(imdbID))
+                {
+                    this.watingForTitle = true;
+                    var newMsg = new proto_messages.MovieTitle();
+                    newMsg.setImdbid(imdbID);
+                    this.$store.dispatch('sendMessageAsWrappedMessage', {
+                        msg: newMsg,
+                        msgType: "ProtoMessages.MovieTitle"
+                    });
+                }
+                else
+                {
+                    this.udpateCurrentPopupTitle();
+                }
+
+                this.showHoverFrame = true;
+            },
+            unhoverImg() {
+                this.showHoverFrame = false;
+                this.currentImdbID = "";
+            },
+            udpateCurrentPopupTitle()
+            {
+                this.$store.commit('setPopupTitle', this.titleList.get(this.currentImdbID));
+                this.watingForTitle = false;
             }
         },
         created() {
             // this.$vuetify.theme.dark = true;
+            eventBus.$on('MovieTitleReply', payload => {
+                console.log("recived MovieTitleReply");
+                console.log("getting popup for: "+this.currentImdbID);
+                console.log(this.popupTitle);
+                this.udpateCurrentPopupTitle();
+            });
         },
         watch: {
             initialDataReceived: {
@@ -95,6 +146,7 @@
     }
 </script>
 
+//TODO:: move to costom css file 
 
 <style>
 .title-poster {

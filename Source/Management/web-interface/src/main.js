@@ -11,8 +11,9 @@ import RadioButton from './components/RadioButton.vue'
 
 import NavBar from './components/NavBar.vue'
 import StatusPage from './components/StatusPage.vue'
-import ModalDialog from './components/ModalDialog.vue'
+import HoverFrame from './components/HoverFrame.vue'
 import OneButtonModalDialog from './components/OneButtonModalDialog.vue'
+// import TitleCard from './components/TitleCard.vue'
 
 import Icon from 'vue-awesome/components/Icon'
 import VueCookies from 'vue-cookies'
@@ -37,6 +38,8 @@ import './assets/css/sb-admin-2.css';
 import './assets/css/main.css';
 import './assets/css/costom.css';
 import './assets/css/costom_font.css';
+import './assets/css/movie_card.css';
+
 // import 'bootstrap/less/modals.less'
 
 Vue.config.productionTip = false
@@ -71,13 +74,15 @@ Vue.component('radio-button', RadioButton)
 
 Vue.component('costom-nav-bar', NavBar)
 Vue.component('status-page', StatusPage)
-Vue.component('costom-modal-dialog', ModalDialog)
+Vue.component('hover-frame', HoverFrame)
 Vue.component('one-button-modal-dialog', OneButtonModalDialog)
 Vue.component('vueslider', vueSlider)
+// Vue.component('card', TitleCard)
 
 
 const routes = [
     { path: '/',                      name: 'status-page',                  component: StatusPage }
+    // { path: "/",                      name: "card",                         component: TitleCard }
   ];
   
 const router = new VueRouter({  

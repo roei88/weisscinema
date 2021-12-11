@@ -68,12 +68,10 @@ namespace Main
         public void HandleTitlesSearch(ProtoMessages.TitlesSearch titlesSearch)
         {
             titlesSearch.Search.Clear();
-            titlesSearch.Pages.Clear();
 
             if (!string.IsNullOrEmpty(titlesSearch.SearchQuery))
 			{
                 Console.WriteLine($"received new TitlesSearch message with query: {titlesSearch.SearchQuery}");
-                List<SingleTitle> listOfTitles = new List<SingleTitle>();
                 int currentPage = 1;
                 int count = 0;
                 List<JObject> pages = new List<JObject>();
@@ -82,13 +80,10 @@ namespace Main
                 
                 try
                 {
-                    //TODO:: check that result is true
                     JObject titlesObj = JObject.Parse(new WebClient().DownloadString(url));
                     JArray titlesArr = (JArray)titlesObj["Search"];
-                    //string pageStr = (string)titlesObj["Search"];
                     if (titlesArr!=null)
 					{
-                        //titlesSearch.Pages.Add(titlesArr.ToString());
                         titlesSearch.Search.AddRange(titlesArr.ToObject<List<ProtoMessages.SingleTitle>>());
                         count += PAGE_SIZE;
                         double totalResults = double.Parse((string)titlesObj["totalResults"]);
@@ -127,8 +122,74 @@ namespace Main
             Send(titlesSearch);
         }
 
-        //helper methods for ProduceContentMessage()
-        //http://www.omdbapi.com/?apikey=bb182d9e&type=movie&page=2&s=the+mat
+
+
+        /// <summary>
+        /// Produce and send new full ArticlesMessage with data taken from newsapi
+        /// </summary>
+        /// <param name="articles">Empty articles message</param>
+        [NewFormatMessageHandlerMethod]
+        public void HandleMovieTitle(ProtoMessages.MovieTitle title)
+        {
+            if (!string.IsNullOrEmpty(title.ImdbID))
+            {
+
+
+                Console.WriteLine($"received new MovieTitle message with imdbID: {title.ImdbID}");
+
+                try
+                {
+                    if (string.IsNullOrEmpty(title.Response))
+                    {
+                        title = GetTitle(title);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex.Message} Trace: {ex.StackTrace}");
+                }
+
+                Console.WriteLine("Sending results");
+            }
+
+            Send(title);
+        }
+
+
+        //TODO:: deserialize rest result into movie title obj
+        private ProtoMessages.MovieTitle GetTitle(ProtoMessages.MovieTitle title)
+        {
+            var url = $"{OMDB_URL}{GetOMDBApiKey()}&i={title.ImdbID}";
+            JObject titleObj = JObject.Parse(new WebClient().DownloadString(url));
+
+            title.Title = (string)titleObj["Title"];
+            title.Year = (string)titleObj["Year"];
+            title.Rated = (string)titleObj["Rated"];
+            title.Released = (string)titleObj["Released"];
+            title.Runtime = (string)titleObj["Runtime"];
+            title.Genre = (string)titleObj["Genre"];
+            title.Director = (string)titleObj["Director"];
+            title.Writer = (string)titleObj["Writer"];
+            title.Actors = (string)titleObj["Actors"];
+            title.Plot = (string)titleObj["Plot"];
+            title.Language = (string)titleObj["Language"];
+            title.Country = (string)titleObj["Country"];
+            title.Awards = (string)titleObj["Awards"];
+            title.Poster = (string)titleObj["Poster"];
+            title.Metascore = (string)titleObj["Metascore"];
+            title.ImdbRating = (string)titleObj["imdbRating"];
+            title.ImdbVotes = (string)titleObj["imdbVotes"]; ;
+            title.Type = (string)titleObj["Type"];
+            title.Dvd = (string)titleObj["DVD"];
+            title.BoxOffice = (string)titleObj["BoxOffice"];
+            title.Production = (string)titleObj["Production"];
+            title.Website = (string)titleObj["Website"];
+            title.Response = (string)titleObj["Response"];
+            JArray ratringArr = (JArray)(titleObj["Ratings"]);
+            title.Ratings.AddRange(ratringArr.ToObject<List<ProtoMessages.TitleRating>>());
+            return title;
+        }
+
         private string GetQueries(string searchQuery = "", string page = "1", string searchType = "movie")
         {
             return $"type={searchType}&page={page}&s={searchQuery}";
@@ -158,23 +219,4 @@ namespace Main
         public string type;
         public string poster;
     }
-
-
-    //public class articlerecord
-    //{
-    //    public articlesource source;
-    //    public string author;
-    //    public string title;
-    //    public string description;
-    //    public string url;
-    //    public string urltoimage;
-    //    public string publishedat;
-    //    public string content;
-    //}
-
-    //public class articlesource
-    //{
-    //    public string id;
-    //    public string name;
-    //}
 }
