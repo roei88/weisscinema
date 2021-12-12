@@ -24,8 +24,11 @@ namespace Main
 
         static public void Initializer(object args)
         {
+            //set up global exeption handler
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Console.CancelKeyPress += new ConsoleCancelEventHandler(closeApplication);
+
+            //set up communication
             MessageHandlersManager messageHandlerManager = new MessageHandlersManager();
             bool success = messageHandlerManager.Start(9001);
 
@@ -34,6 +37,7 @@ namespace Main
                 Console.WriteLine("Could not setup communication!");
             }
 
+            //run web-interface on port 32323
             string currentDirectory = Directory.GetCurrentDirectory();
             string webBuildDir = Path.Combine(Directory.GetParent(currentDirectory).FullName, "release", WEB_FOLDER_NAME);
             if (!Directory.Exists(webBuildDir))
@@ -49,6 +53,8 @@ namespace Main
             }
 
             Utils.EmbeddedWebServer webServer = new Utils.EmbeddedWebServer(webBuildDir, 32323);
+
+            //wait for exit
 
             while (_running)
             {

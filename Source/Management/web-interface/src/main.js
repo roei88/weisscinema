@@ -18,7 +18,6 @@ import './assets/css/font-awesome.min.css';
 import 'bootstrap/less/bootstrap.less'
 import './assets/css/sb-admin-2.css';
 import './assets/css/main.css';
-import './assets/css/costom.css';
 import './assets/css/costom_font.css';
 import './assets/css/movie_card.css';
 

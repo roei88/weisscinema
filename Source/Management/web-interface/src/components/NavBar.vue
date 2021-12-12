@@ -55,7 +55,6 @@
           this.$store.dispatch('showwishlist', {
               on: this.wishliston
           });
-
       }
     },
     computed: {
@@ -76,8 +75,9 @@
     }
   }
 </script>
+
 <style>
-.v-autocomplete {
-  max-height: 30px;
-}
+  .v-autocomplete {
+    max-height: 30px;
+  }
 </style>

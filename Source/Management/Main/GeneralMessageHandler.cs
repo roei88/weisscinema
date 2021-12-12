@@ -34,8 +34,6 @@ namespace Main
         {
             _messageHandlerManager = messageHandlerManager;
             initWishList();
-            
-
         }
 
         //TODO:: load wishlist from file/db
@@ -70,10 +68,8 @@ namespace Main
             try
             {
                 Console.WriteLine($"Received VersionMessage of type {versionMessage.Version}");
-
                 //TODO:: Check that UI version match and act accordingally
-
-                HandleTitlesSearch(new ProtoMessages.TitlesSearch());
+                HandleTitlesSearch(new ProtoMessages.TitlesSearch()); //for sending the wishlist
             }
             catch (Exception ex)
             {
@@ -82,14 +78,18 @@ namespace Main
         }
 
         /// <summary>
-        /// Produce and send new full ArticlesMessage with data taken from newsapi
+        /// Hangles new TitlesSearch message
         /// </summary>
-        /// <param name="articles">Empty articles message</param>
+        /// <param name="titlesSearch">TitlesSearch message</param>
         [NewFormatMessageHandlerMethod]
         public void HandleTitlesSearch(ProtoMessages.TitlesSearch titlesSearch)
         {
             titlesSearch.Search.Clear();
             titlesSearch.WishTitles.Clear();
+
+            //whishlist
+
+            //TODO:: save to localfile/db
 
             if (!string.IsNullOrEmpty(titlesSearch.AddWishTitle) && !_wishList.ContainsKey(titlesSearch.AddWishTitle))
 			{
@@ -103,6 +103,14 @@ namespace Main
                 _wishList.Remove(titlesSearch.RemoveWishTitle);
                 titlesSearch.RemoveWishTitle = string.Empty;
             }
+
+            //TODO:: change to add range with proper casting
+            foreach (KeyValuePair<string, ProtoMessages.MovieTitle> pair in _wishList) //init wishlist
+            {
+                titlesSearch.WishTitles.Add(pair.Key, pair.Value);
+            }
+
+            //search
 
             if (!string.IsNullOrEmpty(titlesSearch.SearchQuery))
 			{
@@ -126,7 +134,7 @@ namespace Main
                         int totalPages = (int)Math.Ceiling(devition);
                         totalResults -= PAGE_SIZE;
 
-                        while (totalResults > 0 && currentPage < MAX_PAGES)
+                        while (totalResults > 0 && currentPage < MAX_PAGES) //add  maximum pages allowed
                         {
                             currentPage++;
                             var nextPageUrl = $"{urlBase}&{GetQueries(titlesSearch.SearchQuery, (currentPage).ToString())}";
@@ -143,7 +151,6 @@ namespace Main
 
                         titlesSearch.TotalResults = count;
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -153,21 +160,13 @@ namespace Main
                 Console.WriteLine("Sending results");
             }
 
-
-            foreach (KeyValuePair<string, ProtoMessages.MovieTitle> pair in _wishList)
-			{
-                titlesSearch.WishTitles.Add(pair.Key, pair.Value);
-            }
-
             Send(titlesSearch);
         }
 
-
-
         /// <summary>
-        /// Produce and send new full ArticlesMessage with data taken from newsapi
+        /// Habdles new MovieTitle message 
         /// </summary>
-        /// <param name="articles">Empty articles message</param>
+        /// <param name="title">MovieTitle message containing the imdb id</param>
         [NewFormatMessageHandlerMethod]
         public void HandleMovieTitle(ProtoMessages.MovieTitle title)
         {
@@ -199,7 +198,6 @@ namespace Main
         {
             var url = $"{OMDB_URL}{GetOMDBApiKey()}&i={title.ImdbID}";
             JObject titleObj = JObject.Parse(new WebClient().DownloadString(url));
-
             title.Title = (string)titleObj["Title"];
             title.Year = (string)titleObj["Year"];
             title.Rated = (string)titleObj["Rated"];
@@ -237,24 +235,5 @@ namespace Main
         {
             return $"apiKey={OMDB_API_KEY}";
         }
-    }
-
-
-
-    public class TitlesSearch
-    {
-        public List<SingleTitle> search;
-        public string totalResults;
-        public string response;
-        public string searchQuery;
-    }
-
-    public class SingleTitle
-    {
-        public string title;
-        public string year;
-        public string imdbID;
-        public string type;
-        public string poster;
     }
 }

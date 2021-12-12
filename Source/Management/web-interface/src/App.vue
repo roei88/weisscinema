@@ -1,12 +1,9 @@
-
-
 <template>
-<v-app>
-
-    <div id="app">
-        <costom-nav-bar></costom-nav-bar>
-        <router-view></router-view>
-    </div>
+    <v-app>
+        <div id="app">
+            <costom-nav-bar></costom-nav-bar>
+            <router-view></router-view>
+        </div>
     </v-app>
 </template>
 
@@ -14,9 +11,7 @@
 <script>
     import { eventBus} from './main'
     import { mapGetters } from 'vuex';   
-    
     let appVersion = require('./version');
-
     var proto_messages = require("./proto/Messages_pb.js");
 
     export default {
@@ -43,4 +38,3 @@
         }
     }
 </script>
-

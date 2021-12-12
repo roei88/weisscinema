@@ -11,22 +11,14 @@ namespace WebCom
 {
     public class WebSocketServer
     {
-
-
         private static HttpListener Listener;
-
         private static CancellationTokenSource SocketLoopTokenSource;
         private static CancellationTokenSource ListenerLoopTokenSource;
-
         private static int SocketCounter = 0;
-
         private static bool ServerIsRunning = true;
-
         private const int CLOSE_SOCKET_TIMEOUT_MS = 2500;
         private const int MESSAGE_MAX_CHUNK_SIZE = 4096;
-
         private SessionDelegate _sessionNewConnectionHandlers;
-
         public int Count { get { return SocketCounter; } }
 
         public event SessionDelegate NewSessionConnected
@@ -136,7 +128,6 @@ namespace WebCom
 
         // The key is a socket id
         private ConcurrentDictionary<int, ConnectedClient> Clients;
-
 
         public WebSocketServer()
         {
@@ -394,7 +385,6 @@ namespace WebCom
             finally
             {
                 broadcastTokenSource.Cancel();
-
                 Console.WriteLine($"Socket {client.SocketId}: Ended processing loop in state {socket.State}");
 
                 // don't leave the socket in any potentially connected state
@@ -416,8 +406,6 @@ namespace WebCom
                     }
 
                 }
-
-
                 // by this point the socket is closed or aborted, the ConnectedClient object is useless
                 if (Clients.TryRemove(client.SocketId, out _))
                     socket.Dispose();

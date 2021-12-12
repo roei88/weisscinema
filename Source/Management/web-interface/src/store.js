@@ -233,6 +233,7 @@ export const store = new Vuex.Store({
             wrappedMessage.setMessagecontent(payload.msg.serializeBinary());
             context.dispatch('sendRawData', wrappedMessage);
         },
+        
         addToWishlist(context, payload) {
             console.log("adding "+ payload.value);
             context.state.titles.setAddwishtitle(payload.value);;
@@ -242,6 +243,7 @@ export const store = new Vuex.Store({
                 msgType: "ProtoMessages.TitlesSearch"
             });
         },
+
         removeFromWishlist(context, payload) {
             context.state.titles.setRemovewishtitle(payload.value);;
 
