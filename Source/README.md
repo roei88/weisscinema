@@ -10,7 +10,7 @@ Build ServicesDotNet.
 Build the solution.
 ```
 Run WinMain.
-```
+
 
 ## Usage - run the frontend (weisscinema/Source/Management/web-interface)
 ```
@@ -19,6 +19,6 @@ npm install
 npm run build
 ```
 npm run dev
-```
+
 
 
