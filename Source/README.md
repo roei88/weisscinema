@@ -3,20 +3,18 @@ Provides movie title search and wishlist - source code
 
 ## - run the backend
 
-```
-Open weisscinema.sln with visual studio 2019 in administrative privileges
-```
-Build ServicesDotNet
-```
+* Open weisscinema.sln with visual studio 2019 in administrative privileges
+
+* Build ServicesDotNet
+
 Build solution
-```
-Run WinMain
+
+* Run WinMain
 
 ## Usage - run the frontend
 
 ```
-npm install
+* npm install
 ```
-npm run build
-```
-npm run dev
+* npm run build
+* npm run dev
