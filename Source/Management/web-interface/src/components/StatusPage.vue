@@ -1,20 +1,14 @@
 <template>
     <div id="page-wrapper">
-
-        <hover-frame v-if="showHoverFrame && !watingForTitle" @Close="unhoverImg()">
-            <!-- <div slot="header">{{popupTitle.getTitle()}}</div>
-            <div slot="body" class="col-xs-12">
-                Body
-            </div> -->
-        </hover-frame>
-
-
+        <hover-frame v-if="showHoverFrame && !watingForTitle" @Close="unhoverImg()" @Add="addToWishlist()" @Remove="removeFromWishlist()"></hover-frame>
         <div class="contentWrapper">
-            
               <v-row>
                     <v-col class="container" cols="12">
                         <v-card elevation="12" class="cards" v-for="item in movieList" :key="item.imdbID">
                         <div class="card-container" @click="hoverImg(item.imdbID)">
+                            <div class="heart-icon">
+                                <svg data-v-1e613282="" version="1.1" viewBox="0 0 18 18" class="svg-icon" style=""><path stroke="rgb(var(--color-red))"  pid="0" d="M15.63 3.458a4.125 4.125 0 0 0-5.835 0L9 4.253l-.795-.795A4.126 4.126 0 1 0 2.37 9.293l.795.795L9 15.922l5.835-5.835.795-.795a4.125 4.125 0 0 0 0-5.835v0z" _stroke="#EF5C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                            </div>
                             <v-img class="title-poster " :src="`${item.poster}`" alt> </v-img>
                             <div class="overlay">        
                                 <div class="text">{{ item.title }} <br><br> {{ item.year }}</div>
@@ -23,7 +17,6 @@
                         </v-card>
                     </v-col>
             </v-row>             
-
             </div> 
         </div> 
 </template>
@@ -51,9 +44,6 @@
             })
         },
         methods: {
-            navigateTo(route) {
-                this.$router.push("/" + route);
-            },
             hoverImg(imdbID) {
                 console.log("hovering on: "+imdbID)
                 this.currentImdbID = imdbID;
@@ -83,6 +73,17 @@
             {
                 this.$store.commit('setPopupTitle', this.titleList.get(this.currentImdbID));
                 this.watingForTitle = false;
+            },
+            addToWishlist() {
+                this.$store.dispatch("addToWishlist", {
+                    value: this.currentImdbID
+                })
+            },
+            removeFromWishlist()
+            {
+                this.$store.dispatch("removeFromWishlist", {
+                    value: this.currentImdbID
+                })
             }
         },
         created() {
@@ -109,71 +110,6 @@
 //TODO:: move to costom css file 
 
 <style>
-.title-poster {
-  min-width: 200px;
-  max-width: 200px;
-  min-height: 300px;
-  max-height: 300px;
-}
 
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.cards {
-  height: 30%;
-  width: 20%;
-  margin: 1%;
-}
-
-.card-text {
-  text-transform: capitalize;
-  font-size: 15px;
-  margin-block: 1px;
-}
-
-.container::after {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.row {
-  display: block !important;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  transition: .5s ease;
-}
-
-.card-container:hover .overlay {
-  opacity: 100%;
-}
-
-.card-container:hover .title-poster {
-  opacity: 40%;
-}
-
-.text {
-  color: rgb(255, 174, 0);
-  font-size: 20px;
-  font-weight: bold;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
 
 </style>

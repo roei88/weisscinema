@@ -44,10 +44,3 @@
     }
 </script>
 
-// <style lang="scss">
-//     @import './assets/css/font-awesome.min.css';
-//     @import './assets/css/sb-admin-2.css';
-//     @import './assets/css/main.css';
-//     @import './assets/css/vpu.css';
-//     @import './assets/css/vpu_font.css';
-// </style>

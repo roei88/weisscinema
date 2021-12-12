@@ -25,11 +25,18 @@
                             <p> <strong> Country: </strong> {{popupTitle.getCountry()}} </p>
 
                         </div>
-                        <div class="cta">
+                        <div v-if="!inWishList" class="cta" @click="$emit('Add')">
                             <button>
                                 Add To Wishlist
                             </button>
                         </div>
+
+                        <div v-if="inWishList" class="cta"  @click="$emit('Remove')">
+                            <button>
+                                Remove from Wishlist
+                            </button>
+                        </div>
+
                         <button class="btn-search-movie" @click="$emit('Close')"> {{ closeButton }}</button>
                     </div>
                 </div>
@@ -51,6 +58,14 @@
             closeButton: {
                 type: String,
                 default: "Close",
+            },
+            add: {
+                type: String,
+                default: "Add",
+            },
+            remove: {
+                type: String,
+                default: "Remove",
             }
         },
         data() {
@@ -61,6 +76,7 @@
         computed: {
             ...mapGetters({
                 popupTitle : "popupTitle",
+                inWishList: "inWishList"
             })
         },
         methods: {

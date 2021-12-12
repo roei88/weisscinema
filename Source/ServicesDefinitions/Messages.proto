@@ -14,6 +14,9 @@ message TitlesSearch
     string response = 3;
     string searchQuery = 4;
     map<string, MovieTitle> titles = 5;
+    map<string, MovieTitle> wishTitles = 6;
+    string addWishTitle = 7;
+    string removeWishTitle = 8;
 }
 
 message SingleTitle

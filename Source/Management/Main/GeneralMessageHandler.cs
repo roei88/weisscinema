@@ -28,11 +28,32 @@ namespace Main
         const int MAX_PAGES = 10;
         const int PAGE_SIZE = 10;
         protected MessageHandlersManager _messageHandlerManager;
+        Dictionary<string, ProtoMessages.MovieTitle> _wishList;
 
         public GeneralMessageHandler(MessageHandlersManager messageHandlerManager)
         {
             _messageHandlerManager = messageHandlerManager;
+            initWishList();
+            
+
         }
+
+        //TODO:: load wishlist from file/db
+        protected bool initWishList()
+		{
+            _wishList = new Dictionary<string, ProtoMessages.MovieTitle>();
+
+            ProtoMessages.MovieTitle m1 = GetTitle(new ProtoMessages.MovieTitle() { ImdbID = "tt0133093" });
+            _wishList.Add("tt0133093", m1);
+
+            ProtoMessages.MovieTitle m2 = GetTitle(new ProtoMessages.MovieTitle() { ImdbID = "tt0289879" });
+            _wishList.Add("tt0289879", m2);
+
+            ProtoMessages.MovieTitle m3 = GetTitle(new ProtoMessages.MovieTitle() { ImdbID = "tt0109830" });
+            _wishList.Add("tt0109830", m3);
+
+            return true;
+		}
 
         protected void Send(IMessage msg)
         {
@@ -52,7 +73,7 @@ namespace Main
 
                 //TODO:: Check that UI version match and act accordingally
 
-                //HandleTitlesSearch(new TitlesSearch());
+                HandleTitlesSearch(new ProtoMessages.TitlesSearch());
             }
             catch (Exception ex)
             {
@@ -68,6 +89,20 @@ namespace Main
         public void HandleTitlesSearch(ProtoMessages.TitlesSearch titlesSearch)
         {
             titlesSearch.Search.Clear();
+            titlesSearch.WishTitles.Clear();
+
+            if (!string.IsNullOrEmpty(titlesSearch.AddWishTitle) && !_wishList.ContainsKey(titlesSearch.AddWishTitle))
+			{
+                ProtoMessages.MovieTitle newWishTitle = GetTitle(new ProtoMessages.MovieTitle() { ImdbID = titlesSearch.AddWishTitle });
+                _wishList.Add(titlesSearch.AddWishTitle, newWishTitle);
+                titlesSearch.AddWishTitle = string.Empty;
+            }
+
+            if (!string.IsNullOrEmpty(titlesSearch.RemoveWishTitle) && _wishList.ContainsKey(titlesSearch.RemoveWishTitle))
+            {
+                _wishList.Remove(titlesSearch.RemoveWishTitle);
+                titlesSearch.RemoveWishTitle = string.Empty;
+            }
 
             if (!string.IsNullOrEmpty(titlesSearch.SearchQuery))
 			{
@@ -119,6 +154,11 @@ namespace Main
             }
 
 
+            foreach (KeyValuePair<string, ProtoMessages.MovieTitle> pair in _wishList)
+			{
+                titlesSearch.WishTitles.Add(pair.Key, pair.Value);
+            }
+
             Send(titlesSearch);
         }
 
@@ -133,8 +173,6 @@ namespace Main
         {
             if (!string.IsNullOrEmpty(title.ImdbID))
             {
-
-
                 Console.WriteLine($"received new MovieTitle message with imdbID: {title.ImdbID}");
 
                 try

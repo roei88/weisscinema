@@ -10,7 +10,6 @@ namespace WinMain
         {
             try
             {
-
                 Process currentProc = Process.GetCurrentProcess();
                 Console.WriteLine("========== WinMain Started ===============  (" + currentProc.Id.ToString() + ")");
 

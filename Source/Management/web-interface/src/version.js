@@ -1,1 +1,1 @@
-module.exports = { version: "0668761-dirty" };
+module.exports = { version: "0.0.1" };

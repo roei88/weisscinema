@@ -6,48 +6,24 @@ import App from './App'
 import 'vue-awesome/icons'
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
-
-import RadioButton from './components/RadioButton.vue'
-
 import NavBar from './components/NavBar.vue'
 import StatusPage from './components/StatusPage.vue'
 import HoverFrame from './components/HoverFrame.vue'
-import OneButtonModalDialog from './components/OneButtonModalDialog.vue'
-// import TitleCard from './components/TitleCard.vue'
-// import autocomplete from './components/AutoComplete.vue';
-
-
 import Icon from 'vue-awesome/components/Icon'
 import VueCookies from 'vue-cookies'
-import vueSlider from 'vue-slider-component'
-
-import "opencv.js";
-
 import _ from "lodash";
-
 import {store} from './store';
-
-// import router from './router'
 import jQuery from 'jquery'
-
-global.jQuery = jQuery
-let Bootstrap = require('bootstrap')
-
-// import 'bootstrap/dist/css/bootstrap.css'
 import './assets/css/font-awesome.min.css';
 import 'bootstrap/less/bootstrap.less'
-
 import './assets/css/sb-admin-2.css';
 import './assets/css/main.css';
 import './assets/css/costom.css';
 import './assets/css/costom_font.css';
 import './assets/css/movie_card.css';
 
-// import './components/AutoComplete.js';
-
-// import 'bootstrap/less/modals.less'
-
-// let AutoComplete = require("./components/AutoComplete.vue");
+global.jQuery = jQuery
+let Bootstrap = require('bootstrap')
 
 Vue.config.productionTip = false
 
@@ -77,25 +53,15 @@ Vue.use(VueCookies);
 Vue.use(Vuetify);
 
 Vue.component('icon', Icon)
-Vue.component('radio-button', RadioButton)
-
 Vue.component('costom-nav-bar', NavBar)
 Vue.component('status-page', StatusPage)
 Vue.component('hover-frame', HoverFrame)
-Vue.component('one-button-modal-dialog', OneButtonModalDialog)
-Vue.component('vueslider', vueSlider)
-
-// Vue.component('autocomplete', AutoComplete)
-// Vue.component('card', TitleCard)
-
 
 const routes = [
     { path: '/',                      name: 'status-page',                  component: StatusPage }
-    // { path: "/",                      name: "card",                         component: TitleCard }
   ];
   
 const router = new VueRouter({  
-    // mode: 'history',
     routes 
   });
   
@@ -104,33 +70,5 @@ new Vue({
   el: '#app',
   store,
   router,
-  render: h => h(App),
-  created() {
-    if (this.$route.query.advanced == "true")
-    {
-      console.log("Advanced mode is on");
-      this.$store.commit('setAdvancedMode', true);
-    }
-  }
+  render: h => h(App)
 })
-
-router.beforeEach((to, from, next) => {
-  var hasTo = (to != null);
-  var isAdvancedRoute = false;
-  var advancedRoutes = store.getters.getAdvancedRoutes;
-  for (var i = 0; i < advancedRoutes.length; i++)
-  {
-      if (to.name == advancedRoutes[i])
-      {
-        isAdvancedRoute = true;
-        break;
-      }
-  }
-  var inAdvancedMode = store.getters.getAdvancedMode;
-  if (hasTo && isAdvancedRoute && !inAdvancedMode)
-  {
-    console.log(to.name + " is accessible only in advanced route, routing to main page");
-    return next("/");
-  }
-  return next();
-});

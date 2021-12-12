@@ -7,8 +7,6 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const whiteLabel = process.env.CL === '/DOEM' ? 'stats' : 'pixellot';
-
 module.exports = {
   entry: {
     app: './src/main.js'
