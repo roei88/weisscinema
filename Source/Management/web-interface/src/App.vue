@@ -1,8 +1,13 @@
+
+
 <template>
+<v-app>
+
     <div id="app">
         <costom-nav-bar></costom-nav-bar>
         <router-view></router-view>
     </div>
+    </v-app>
 </template>
 
 

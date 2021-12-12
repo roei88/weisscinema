@@ -14,12 +14,15 @@ import StatusPage from './components/StatusPage.vue'
 import HoverFrame from './components/HoverFrame.vue'
 import OneButtonModalDialog from './components/OneButtonModalDialog.vue'
 // import TitleCard from './components/TitleCard.vue'
+// import autocomplete from './components/AutoComplete.vue';
+
 
 import Icon from 'vue-awesome/components/Icon'
 import VueCookies from 'vue-cookies'
 import vueSlider from 'vue-slider-component'
 
 import "opencv.js";
+
 import _ from "lodash";
 
 import {store} from './store';
@@ -40,7 +43,11 @@ import './assets/css/costom.css';
 import './assets/css/costom_font.css';
 import './assets/css/movie_card.css';
 
+// import './components/AutoComplete.js';
+
 // import 'bootstrap/less/modals.less'
+
+// let AutoComplete = require("./components/AutoComplete.vue");
 
 Vue.config.productionTip = false
 
@@ -77,6 +84,8 @@ Vue.component('status-page', StatusPage)
 Vue.component('hover-frame', HoverFrame)
 Vue.component('one-button-modal-dialog', OneButtonModalDialog)
 Vue.component('vueslider', vueSlider)
+
+// Vue.component('autocomplete', AutoComplete)
 // Vue.component('card', TitleCard)
 
 
@@ -91,6 +100,7 @@ const router = new VueRouter({
   });
   
 new Vue({
+  vuetify : new Vuetify(),
   el: '#app',
   store,
   router,

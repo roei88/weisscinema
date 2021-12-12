@@ -56,15 +56,6 @@
   float: right;
 }
 
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
 .modal-enter {
   opacity: 0;
 }
@@ -78,7 +69,6 @@
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
-
 
 .loaderContainer {
   position: absolute;
@@ -115,101 +105,3 @@
   text-align: center;
   margin: 0 auto;
 }
-
-.limit-title-text-length {
-  width: 120px;
-  text-overflow: ellipsis !important; 
-  white-space: nowrap !important; 
-  overflow:hidden !important;
-}
-
-.limit-title-text-length-parent {
-  display: inline-flex !important;
-}
-
-/* .nav-title-alignment {
-  margin-top: -5px;
-} */
-
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/*************** NEW CONFIGURATION TABLE **************/
-div.blueTable {
-  border: 1px solid #1C6EA4;
-  background-color: #EEEEEE;
-  width: 100%;
-  text-align: left;
-  border-collapse: collapse;
-}
-.divTable.blueTable .divTableCell, .divTable.blueTable .divTableHead {
-  border: 1px solid #AAAAAA;
-  padding: 3px 2px;
-}
-.divTable.blueTable .divTableBody .divTableCell {
-  font-size: 13px;
-}
-.divTable.blueTable .divTableRow:nth-child(even) {
-  background: #D0E4F5;
-}
-.divTable.blueTable .divTableHeading {
-  background: #1C6EA4;
-  background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-  background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-  background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-  border-bottom: 2px solid #444444;
-}
-.divTable.blueTable .divTableHeading .divTableHead {
-  font-size: 15px;
-  font-weight: bold;
-  color: #FFFFFF;
-  border-left: 2px solid #D0E4F5;
-}
-.divTable.blueTable .divTableHeading .divTableHead:first-child {
-  border-left: none;
-}
-
-.blueTable .tableFootStyle {
-  font-size: 14px;
-  font-weight: bold;
-  color: #FFFFFF;
-  background: #D0E4F5;
-  background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
-  background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
-  background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
-  border-top: 2px solid #444444;
-}
-.blueTable .tableFootStyle {
-  font-size: 14px;
-}
-.blueTable .tableFootStyle .links {
-	 text-align: right;
-}
-.blueTable .tableFootStyle .links a{
-  display: inline-block;
-  background: #1C6EA4;
-  color: #FFFFFF;
-  padding: 2px 8px;
-  border-radius: 5px;
-}
-.blueTable.outerTableFooter {
-  border-top: none;
-}
-.blueTable.outerTableFooter .tableFootStyle {
-  padding: 3px 5px; 
-}
-/* DivTable.com */
-.divTable{ display: table; }
-.divTableRow { display: table-row; }
-.divTableHeading { display: table-header-group;}
-.divTableCell, .divTableHead { display: table-cell;}
-.divTableHeading { display: table-header-group;}
-.divTableFoot { display: table-footer-group;}
-.divTableBody { display: table-row-group;}

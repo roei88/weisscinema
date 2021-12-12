@@ -15,16 +15,14 @@
                   </button>
         <a class="navbar-brand" href="#"> </a>
       </div>
-  
       <li>
         <div class="search-wrapper">
-          <input class="search-key" type="text" @keyup="searchMovies" v-model="searchQuery" placeholder="Search Title..."/>
-          <!-- <div class="pull-right">
-              <button type="submit" class="btn-search-movie" @click="searchMovies">{{waitingForSearchResults ? "Searching..." : "Search"}}</button>
-          </div> -->
+          <v-row>
+            <v-col>
+              <v-autocomplete class="search-key" :items="entries" :search-input.sync="searchQuery" background-color="white"   hide-details hide-no-data dense filled label="Search Title..." @keyup="searchMovies"></v-autocomplete>
+            </v-col>
+          </v-row>
         </div>
-
-        
       </li>
     </nav>
 </template>
@@ -41,34 +39,16 @@
     data() {
       return {
         searchQuery: "",
-        waitingForSearchResults: false
-        // systemStatus: proto_messages.GeneralStatus.GOOD,
-        // connectedToAgent: false,
-        // showAdvancedNavBar: this.$store.getters.getAdvancedMode,
-        // mainNavBar: [
-        //   { title: 'Dashboard',     icon: 'icon icon-dashboard',    name: 'status-page',        route: '',              visible: true }
-        // ],
-        // showNavDialog: false,
-        // pageTransitionPanding: ""
+        waitingForSearchResults: false,
+        newTag: '',
+        queryTerm: ''
       }
     },
     methods: {
       navigateTo(route) {
-          // mixpanel.track("Navigate to " + route + " from " + this.$route.name);
           this.$router.push("/" + route);
           this.pageTransitionPanding = "";
       },
-      // goToPage(route) {
-      //   if (this.$store.getters.isDirty)
-      //   {
-      //     this.showNavDialog = true;
-      //     this.pageTransitionPanding = route;
-      //   }
-      //   else
-      //   {
-      //     this.navigateTo(route);
-      //   }
-      // },
       unsevedChangesYes() {
         this.showNavDialog = false
         this.$store.commit('setIsDirty', false);
@@ -87,20 +67,25 @@
     },
     computed: {
       ...mapGetters({
-        
+        entries: "entries"
       }),
       currentRoute() {
         return this.$route.name;
       },
       isDevMode() {
         return Vue.config.devtools;
-      }
+      }      
     },
     created () {
-      eventBus.$on('TitlesSearchReply', payload => {
+        eventBus.$on('TitlesSearchReply', payload => {
         console.log("recived TitlesSearchReply");
         this.waitingForSearchResults = false;
       });
     }
   }
 </script>
+<style>
+.v-autocomplete {
+  max-height: 30px;
+}
+</style>

@@ -25,7 +25,6 @@
     "net": "^1.0.2",
     "node-sass": "^4.5.3",
     "opencv.js": "^1.2.1",
-    "sass-loader": "^6.0.6",
     "script-loader": "^0.7.2",
     "tls": "0.0.1",
     "vue": "^2.6.11",
@@ -33,7 +32,6 @@
     "vue-cookies": "^1.5.4",
     "vue-router": "^2.6.0",
     "vue-slider-component": "^2.7.1",
-    "vuetify": "^2.6.1",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
@@ -49,6 +47,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
     "cssnano": "^3.10.0",
+    "deepmerge": "^4.2.2",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.14.1",
     "extract-text-webpack-plugin": "^2.0.0",
@@ -64,6 +63,8 @@
     "ora": "^1.2.0",
     "protoc": "^1.0.4",
     "rimraf": "^2.6.0",
+    "sass": "^1.32.13",
+    "sass-loader": "^6.0.7",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
     "url-loader": "^1.1.2",
